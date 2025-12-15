@@ -20,7 +20,7 @@ export default async function Index() {
       <Container className={styles.section}>
         <div className={styles.heroInfo}>
           <p className={styles.heroLead}>
-            Welcome to Sparrow Partners, your internal hub for managing and
+            Welcome to ARAS (Advance Remote Archive System), your internal hub for managing and
             collaborating on projects. Access your documents, track progress,
             and stay in sync with your team. Please sign in to continue.
           </p>

@@ -14,7 +14,7 @@ import "../styles/blocknote.css";
 const inter = Inter({ subsets: ["latin"] });
 
 export const metadata: Metadata = {
-  title: "Sparrow Partners",
+  title: "ARAS (Advance Remote Archive System)",
   icons: {
     icon: "/logo.png",
   },

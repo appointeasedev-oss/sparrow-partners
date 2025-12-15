@@ -21,15 +21,19 @@
   max-width: 460px;
   color: var(--color-text-lighter);
   font-size: var(--size-xl);
+  text-align: center;
 }
 
 .heroInfo {
   margin-bottom: var(--space-12);
+  display: flex;
+  justify-content: center;
 }
 
 .heroActions {
   display: flex;
   gap: var(--space-6);
+  justify-content: center;
 }
 
 .featuresGrid {

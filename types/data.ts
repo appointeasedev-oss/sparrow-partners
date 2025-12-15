@@ -8,6 +8,7 @@ export type User = {
   avatar?: string;
   color: string;
   groupIds: string[];
+  password?: string;
 };
 
 export type Group = {

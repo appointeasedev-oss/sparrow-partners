@@ -15,9 +15,13 @@ export const authConfig: NextAuthConfig = {
           label: "email",
           type: "text",
         },
+        password: {
+          label: "password",
+          type: "password",
+        },
       },
       async authorize(credentials) {
-        if (!credentials || typeof credentials.email !== "string") {
+        if (!credentials || typeof credentials.email !== "string" || typeof credentials.password !== "string") {
           throw new Error("No credentials or email");
         }
 
@@ -25,6 +29,10 @@ export const authConfig: NextAuthConfig = {
 
         if (!user) {
           throw new Error("User not found");
+        }
+
+        if (credentials.password !== user.password) {
+          throw new Error("Invalid password");
         }
 
         return {
@@ -35,27 +43,6 @@ export const authConfig: NextAuthConfig = {
         };
       },
     }),
-
-    /*
-    // Use GitHub authentication
-    // import GithubProvider from "next-auth/providers/github";
-    GithubProvider({
-      clientId: process.env.GITHUB_CLIENT_ID as string,
-      clientSecret: process.env.GITHUB_CLIENT_SECRET as string,
-    }),
-    */
-
-    /*
-    // Use Auth0 authentication
-    // import Auth0Provider from "next-auth/providers/auth0";
-    Auth0Provider({
-      clientId: process.env.AUTH0_CLIENT_ID as string,
-      clientSecret: process.env.AUTH0_CLIENT_SECRET as string,
-      issuer: process.env.AUTH0_ISSUER_BASE_URL,
-    }),
-    */
-
-    // ...add more providers here
   ],
 
   trustHost: true,

@@ -19,16 +19,15 @@ export default async function Index() {
     <MarketingLayout>
       <Container className={styles.section}>
         <div className={styles.heroInfo}>
-          <h1 className={styles.heroTitle}>Sparrow Partners</h1>
           <p className={styles.heroLead}>
-            Manage your projects with Sparrow here.
+            Welcome to Sparrow Partners, your internal hub for managing and collaborating on projects. Access your documents, track progress, and stay in sync with your team. Please sign in to continue.
           </p>
         </div>
         <div className={styles.heroActions}>
           <form
             action={async () => {
               "use server";
-              await signIn();
+              await signIn(undefined, { redirectTo: "/signin" });
             }}
           >
             <Button icon={<SignInIcon />}>Sign in</Button>

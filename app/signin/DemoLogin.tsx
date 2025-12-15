@@ -1,21 +1,35 @@
 "use client";
 
 import { signIn } from "next-auth/react";
-import { users } from "@/data/users";
-import { Select } from "@/primitives/Select";
+import { Button } from "@/primitives/Button";
+import { Input } from "@/primitives/Input";
 import styles from "./signin.module.css";
+import { FormEvent, useState } from "react";
 
-// Used only for demo authentication, displays a dropdown of users
 export function DemoLogin() {
+  const [email, setEmail] = useState("");
+  const [password, setPassword] = useState("");
+
+  const handleSubmit = (e: FormEvent) => {
+    e.preventDefault();
+    signIn("credentials", { email, password });
+  };
+
   return (
-    <div className={styles.actions}>
-      <Select
-        items={users.map((user) => ({ value: user.id, title: user.name }))}
-        onChange={(email) => {
-          signIn("credentials", { email });
-        }}
-        placeholder="Choose a profile…"
+    <form className={styles.actions} onSubmit={handleSubmit}>
+      <Input
+        type="email"
+        placeholder="E-mail"
+        value={email}
+        onChange={(e) => setEmail(e.target.value)}
       />
-    </div>
+      <Input
+        type="password"
+        placeholder="Password"
+        value={password}
+        onChange={(e) => setPassword(e.target.value)}
+      />
+      <Button type="submit">Sign in</Button>
+    </form>
   );
 }

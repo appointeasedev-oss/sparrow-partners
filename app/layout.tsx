@@ -15,6 +15,9 @@ const inter = Inter({ subsets: ["latin"] });
 
 export const metadata: Metadata = {
   title: "Sparrow Partners",
+  icons: {
+    icon: "/logo.png",
+  },
 };
 
 export default async function RootLayout({

@@ -1,10 +1,10 @@
 "use client";
 
+import { FormEvent, useState } from "react";
 import { signIn } from "next-auth/react";
 import { Button } from "@/primitives/Button";
 import { Input } from "@/primitives/Input";
 import styles from "./signin.module.css";
-import { FormEvent, useState } from "react";
 
 export function DemoLogin() {
   const [email, setEmail] = useState("");

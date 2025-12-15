@@ -20,7 +20,9 @@ export default async function Index() {
       <Container className={styles.section}>
         <div className={styles.heroInfo}>
           <p className={styles.heroLead}>
-            Welcome to Sparrow Partners, your internal hub for managing and collaborating on projects. Access your documents, track progress, and stay in sync with your team. Please sign in to continue.
+            Welcome to Sparrow Partners, your internal hub for managing and
+            collaborating on projects. Access your documents, track progress,
+            and stay in sync with your team. Please sign in to continue.
           </p>
         </div>
         <div className={styles.heroActions}>

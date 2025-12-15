@@ -12,7 +12,9 @@ export function MarketingFooter({
   return (
     <footer className={clsx(className, styles.footer)} {...props}>
       <Container className={styles.container}>
-        <span className={styles.copyright}>© {year} ARAS (Advance Remote Archive System)</span>
+        <span className={styles.copyright}>
+          © {year} ARAS (Advance Remote Archive System)
+        </span>
       </Container>
     </footer>
   );

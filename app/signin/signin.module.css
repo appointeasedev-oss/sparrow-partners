@@ -29,7 +29,13 @@
 
 .actions {
   display: flex;
+  flex-direction: column;
   gap: var(--space-6);
+}
+
+.error {
+  color: var(--color-error);
+  text-align: center;
 }
 
 @media (min-width: 1024px) {

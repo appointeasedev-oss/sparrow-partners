@@ -14,7 +14,7 @@ import "../styles/blocknote.css";
 const inter = Inter({ subsets: ["latin"] });
 
 export const metadata: Metadata = {
-  title: "Liveblocks Starter Kit",
+  title: "Sparrow Partners",
 };
 
 export default async function RootLayout({

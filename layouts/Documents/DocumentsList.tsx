@@ -108,19 +108,20 @@ export function DocumentsList({
     );
   }
 
-  const createDocumentButton = (
-    <DocumentCreatePopover
-      align="end"
-      userId={session.user.info.id}
-      groupIds={group?.id ? [group.id] : undefined}
-      draft={filter === "drafts" || filter === "all"}
-      sideOffset={12}
-    >
-      <Button icon={<PlusIcon />}>
-        {group?.id ? "New document" : "New draft"}
-      </Button>
-    </DocumentCreatePopover>
-  );
+  const createDocumentButton =
+    session.user.info.name === "Satvik Singh" ? (
+      <DocumentCreatePopover
+        align="end"
+        userId={session.user.info.id}
+        groupIds={group?.id ? [group.id] : undefined}
+        draft={filter === "drafts" || filter === "all"}
+        sideOffset={12}
+      >
+        <Button icon={<PlusIcon />}>
+          {group?.id ? "New document" : "New draft"}
+        </Button>
+      </DocumentCreatePopover>
+    ) : null;
 
   return (
     <Container

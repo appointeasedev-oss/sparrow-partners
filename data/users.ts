@@ -13,7 +13,7 @@ export const users: Omit<User, "color">[] = [
     id: "satvik.singh@sparrow.com",
     name: "Satvik Singh",
     avatar: "https://liveblocks.io/avatars/avatar-1.png",
-    groupIds: ["Mail", "Shubham", "Blanxiro"],
+    groupIds: ["Mail", "Shubham", "Blanxiro", "Khushank"],
     password: "Satvik#Testplay#2025",
   },
   {
@@ -24,10 +24,10 @@ export const users: Omit<User, "color">[] = [
     password: "Shubh@m$parr0w",
   },
   {
-    id: "kushank@sparrow.com",
-    name: "Kushank",
+    id: "khushank@sparrow.com",
+    name: "Khushank",
     avatar: "https://liveblocks.io/avatars/avatar-3.png",
-    groupIds: ["Blanxiro"],
+    groupIds: ["Blanxiro", "Khushank"],
     password: "Kushankbhaikapassword",
   },
   {

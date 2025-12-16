@@ -17,4 +17,8 @@ export const groups: Group[] = [
     id: "Blanxiro",
     name: "Blanxiro",
   },
+  {
+    id: "Khushank",
+    name: "Khushank",
+  },
 ];

@@ -1,21 +1,21 @@
-import { groups } from "@/data/groups";
-import { users } from "@/data/users";
-import { Group } from "@/types";
-import { getGroup } from "./getGroup";
+import { supabase } from "./supabase";
 
 type Props = {
   groupIds?: string[];
   search?: string;
 };
 
-type GroupWithMembers = Group & {
+type GroupWithMembers = {
+  id: string;
+  name: string;
+  created_at: string | null;
   memberIds: string[];
 };
 
 /**
  * Get Groups
  *
- * Simulates calling your database and returning a list of groups
+ * Gets groups from Supabase database
  *
  * @param groupIds - The group ids to get
  * @param search - The term to filter your users by, checks users' ids and names
@@ -23,47 +23,29 @@ type GroupWithMembers = Group & {
 export async function getGroups({ groupIds, search }: Props = {}): Promise<
   (GroupWithMembers | null)[]
 > {
-  const groupsPromises: Promise<Group | null>[] = [];
+  let query = supabase.from('groups').select(`
+    *,
+    user_groups(user_id)
+  `);
 
-  // Filter by userIds or get all users
   if (groupIds) {
-    for (const groupId of groupIds) {
-      groupsPromises.push(getGroup(groupId));
-    }
-  } else {
-    const allGroupIds = groups.map((group) => group.id);
-
-    for (const groupId of allGroupIds) {
-      groupsPromises.push(getGroup(groupId));
-    }
+    query = query.in('id', groupIds);
   }
 
-  let groupList = await Promise.all(groupsPromises);
-
-  // If search term, check if term is included in name or id, and filter
   if (search) {
     const term = search.toLowerCase();
-
-    groupList = groupList.filter((group) => {
-      if (!group) {
-        return false;
-      }
-
-      return (
-        group.name.toLowerCase().includes(term) ||
-        group.id.toLowerCase().includes(term)
-      );
-    });
+    query = query.or(`name.ilike.%${term}%,id.ilike.%${term}%`);
   }
 
-  return groupList.map((group) =>
-    group
-      ? {
-          ...group,
-          memberIds: users
-            .filter((user) => user.groupIds.includes(group.id))
-            .map((user) => user.id),
-        }
-      : group
-  );
+  const { data: groups, error } = await query;
+
+  if (error) {
+    console.error('Error fetching groups:', error);
+    return [];
+  }
+
+  return groups?.map(group => ({
+    ...group,
+    memberIds: group.user_groups?.map((ug: any) => ug.user_id) || [],
+  })) || [];
 }

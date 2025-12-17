@@ -1,15 +1,16 @@
 import clsx from "clsx";
 import { usePathname } from "next/navigation";
-import { ComponentProps, useMemo } from "react";
+import { ComponentProps, useMemo, useState } from "react";
 import {
   DASHBOARD_DRAFTS_URL,
   DASHBOARD_GROUP_URL,
   DASHBOARD_URL,
 } from "@/constants";
-import { FileIcon, FolderIcon } from "@/icons";
+import { FileIcon, FolderIcon, UserIcon } from "@/icons";
 import { LinkButton } from "@/primitives/Button";
 import { Group } from "@/types";
 import { normalizeTrailingSlash } from "@/utils";
+import { ChatSidebar, ChatWindow } from "../Chat";
 import styles from "./DashboardSidebar.module.css";
 
 interface Props extends ComponentProps<"div"> {
@@ -49,6 +50,8 @@ function SidebarLink({
 }
 
 export function DashboardSidebar({ className, groups, ...props }: Props) {
+  const [showChat, setShowChat] = useState(false);
+  const [selectedChatUser, setSelectedChatUser] = useState<string | null>(null);
   return (
     <div className={clsx(className, styles.sidebar)} {...props}>
       <nav className={styles.navigation}>
@@ -65,6 +68,14 @@ export function DashboardSidebar({ className, groups, ...props }: Props) {
               </SidebarLink>
             </li>
           </ul>
+        </div>
+        <div className={styles.category}>
+          <button
+            className={clsx(styles.chatToggle, { [styles.chatToggleActive]: showChat })}
+            onClick={() => setShowChat(!showChat)}
+          >
+            <UserIcon /> Chat
+          </button>
         </div>
         <div className={styles.category}>
           <span className={styles.categoryTitle}>Groups</span>
@@ -84,6 +95,27 @@ export function DashboardSidebar({ className, groups, ...props }: Props) {
           </ul>
         </div>
       </nav>
+      
+      {showChat && (
+        <div className={styles.chatContainer}>
+          {!selectedChatUser ? (
+            <ChatSidebar
+              selectedUserId={selectedChatUser || undefined}
+              onSelectUser={(userId) => setSelectedChatUser(userId)}
+            />
+          ) : (
+            <div className={styles.chatWindowContainer}>
+              <button
+                className={styles.backButton}
+                onClick={() => setSelectedChatUser(null)}
+              >
+                ← Back
+              </button>
+              <ChatWindow userId={selectedChatUser} />
+            </div>
+          )}
+        </div>
+      )}
     </div>
   );
 }

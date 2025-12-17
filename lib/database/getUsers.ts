@@ -1,6 +1,4 @@
-import { users } from "@/data/users";
-import { User } from "@/types";
-import { getUser } from "./getUser";
+import { supabase } from "./supabase";
 
 type Props = {
   userIds?: string[];
@@ -10,43 +8,79 @@ type Props = {
 /**
  * Get Users
  *
- * Simulates calling your database and returning a list of user with seeded random colours
+ * Gets users from Supabase database
  *
  * @param userIds - The user ids to get
  * @param search - The term to filter your users by, checks users' ids and names
  */
 export async function getUsers({ userIds, search }: Props = {}) {
-  const usersPromises: Promise<User | null>[] = [];
+  let query = supabase.from('users').select(`
+    *,
+    user_groups!inner(group_id)
+  `);
 
-  // Filter by userIds or get all users
   if (userIds) {
-    for (const userId of userIds) {
-      usersPromises.push(getUser(userId));
-    }
-  } else {
-    const allUserIds = users.map((user) => user.id);
-    for (const userId of allUserIds) {
-      usersPromises.push(getUser(userId));
-    }
+    query = query.in('id', userIds);
   }
 
-  const userList = await Promise.all(usersPromises);
-
-  // If search term, check if term is included in name or id, and filter
   if (search) {
     const term = search.toLowerCase();
-
-    return userList.filter((user) => {
-      if (!user) {
-        return false;
-      }
-
-      return (
-        user.name.toLowerCase().includes(term) ||
-        user.id.toLowerCase().includes(term)
-      );
-    });
+    query = query.or(`name.ilike.%${term}%,id.ilike.%${term}%`);
   }
 
-  return userList;
+  const { data: users, error } = await query;
+
+  if (error) {
+    console.error('Error fetching users:', error);
+    return [];
+  }
+
+  // Transform data to include groupIds
+  return users?.map(user => ({
+    ...user,
+    groupIds: user.user_groups?.map((ug: any) => ug.group_id) || [],
+  })) || [];
+}
+
+/**
+ * Get users in the same groups as the current user
+ */
+export async function getUsersInSameGroups(currentUserId: string) {
+  const { data: userGroups } = await supabase
+    .from('user_groups')
+    .select('group_id')
+    .eq('user_id', currentUserId);
+
+  if (!userGroups?.length) {
+    return [];
+  }
+
+  const groupIds = userGroups.map(ug => ug.group_id);
+
+  const { data: users, error } = await supabase
+    .from('users')
+    .select(`
+      *,
+      user_groups!inner(group_id)
+    `)
+    .in('user_groups.group_id', groupIds)
+    .neq('id', currentUserId);
+
+  if (error) {
+    console.error('Error fetching users in same groups:', error);
+    return [];
+  }
+
+  // Remove duplicates and transform data
+  const uniqueUsers = users?.reduce((acc: any[], user) => {
+    if (!acc.find(u => u.id === user.id)) {
+      acc.push({
+        ...user,
+        groupIds: user.user_groups?.map((ug: any) => ug.group_id) || [],
+      });
+    }
+    return acc;
+  }, []) || [];
+
+  return uniqueUsers;
 }

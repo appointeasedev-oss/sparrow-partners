@@ -12,7 +12,7 @@ export const users: Omit<User, "color">[] = [
   {
     id: "satvik.singh@sparrow.com",
     name: "Satvik Singh",
-    avatar: "https://liveblocks.io/avatars/avatar-1.png",
+    avatar: "pic.jpg",
     groupIds: ["Mail", "Shubham", "Blanxiro", "Khushank"],
     password: "Satvik#Testplay#2025",
   },

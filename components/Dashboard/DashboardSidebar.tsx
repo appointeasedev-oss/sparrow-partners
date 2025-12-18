@@ -18,11 +18,17 @@ interface Props extends ComponentProps<"div"> {
   currentUser: User;
 }
 
-interface SidebarLinkProps extends Omit<ComponentProps<typeof LinkButton>, "href"> {
+interface SidebarLinkProps
+  extends Omit<ComponentProps<typeof LinkButton>, "href"> {
   href: string;
 }
 
-function SidebarLink({ href, children, className, ...props }: SidebarLinkProps) {
+function SidebarLink({
+  href,
+  children,
+  className,
+  ...props
+}: SidebarLinkProps) {
   const pathname = usePathname();
   const isActive = useMemo(
     () => normalizeTrailingSlash(pathname) === normalizeTrailingSlash(href),

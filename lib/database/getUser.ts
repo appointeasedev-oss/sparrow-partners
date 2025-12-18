@@ -1,46 +1,54 @@
-import { supabase } from "./supabase";
-
-import { supabase } from "./supabase";
+import { colors } from "@/data/colors";
+import { users } from "@/data/users";
 
 /**
  * Get User
  *
- * Gets user from Supabase database
+ * Simulates calling your database and returning a user with a seeded random colour
  *
  * @param userId - The user's id
  */
 export async function getUser(userId: string) {
-  const { data: user, error } = await supabase
-    .from('users')
-    .select('*')
-    .eq('id', userId)
-    .single();
-    .select('*')
-    .eq('id', userId)
-    .single();
+  const user = users.find((user) => user.id === userId);
 
-  if (error || !user) {
+  if (!user) {
     console.warn(`
-ERROR: User "${userId}" was not found in database.
+ERROR: User "${userId}" was not found. 
+
+Check that you've added the user to data/users.ts, for example:
+{
+  id: "${userId}",
+  name: "Tchoka Ahoki",
+  avatar: "https://liveblocks.io/avatars/avatar-7.png",
+  groupIds: ["product", "engineering", "design"],
+},
+ 
 `);
     return null;
   }
 
-  // Get user's group IDs
-  const { data: userGroups } = await supabase
-    .from('user_groups')
-    .select('group_id')
-    .eq('user_id', userId);
+  const color = getRandom(colors, userId);
+  return { color, ...user };
+}
 
-  const groupIds = userGroups?.map(ug => ug.group_id) || [];
-    .from('user_groups')
-    .select('group_id')
-    .eq('user_id', userId);
+export function getRandom<T>(array: T[], seed?: string): T {
+  const index = seed
+    ? Math.abs(hashCode(seed)) % array.length
+    : Math.floor(Math.random() * array.length);
 
-  const groupIds = userGroups?.map(ug => ug.group_id) || [];
+  return array[index];
+}
 
-  return {
-    ...user,
-    groupIds,
-  };
+function hashCode(string: string) {
+  let hash = 0;
+
+  if (string.length > 0) {
+    let index = 0;
+
+    while (index < string.length) {
+      hash = ((hash << 5) - hash + string.charCodeAt(index++)) | 0;
+    }
+  }
+
+  return hash;
 }

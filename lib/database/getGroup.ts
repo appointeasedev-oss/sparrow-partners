@@ -1,15 +1,14 @@
-import { supabase } from "./supabase";
-
-import { supabase } from "./supabase";
+import { groups } from "@/data/groups";
+import { Group } from "@/types";
 
 /**
  * Get Group
  *
- * Gets group from Supabase database
+ * Simulates calling your database and returning a group
  *
  * @param id - The group's id
  */
-export async function getGroup(id: string) {
+export async function getGroup(id: string): Promise<Group | null> {
   // Special cases for `@everyone` and `@here` as they're not "real" groups
   if (id === "everyone") {
     return {
@@ -25,40 +24,5 @@ export async function getGroup(id: string) {
     };
   }
 
-  const { data: group, error } = await supabase
-    .from('groups')
-    .select('*')
-    .eq('id', id)
-    .single();
-
-  if (error || !group) {
-    return null;
-  }
-
-  // Special cases for `@everyone` and `@here` as they're not "real" groups
-  if (id === "everyone") {
-    return {
-      id: "everyone",
-      name: "Everyone",
-    };
-  }
-
-  if (id === "here") {
-    return {
-      id: "here",
-      name: "Here",
-    };
-  }
-
-  const { data: group, error } = await supabase
-    .from('groups')
-    .select('*')
-    .eq('id', id)
-    .single();
-
-  if (error || !group) {
-    return null;
-  }
-
-  return group;
+  return groups.find((group) => group.id === id) ?? null;
 }

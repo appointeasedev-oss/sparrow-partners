@@ -102,7 +102,7 @@ export function DashboardSidebar({
                     icon={<UserIcon />}
                   >
                     {user.name}
-                  </SAidebarLink>
+                  </SidebarLink>
                 </li>
               );
             })}

@@ -8,6 +8,11 @@ module.exports = {
         hostname: "liveblocks.io",
         pathname: "/**",
       },
+      {
+        protocol: "https",
+        hostname: "olcojkaokbyrbqjueboo.supabase.co",
+        pathname: "/**",
+      },
     ],
   },
 };

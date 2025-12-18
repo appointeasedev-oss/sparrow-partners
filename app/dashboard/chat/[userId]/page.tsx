@@ -1,9 +1,9 @@
 "use client";
 
-import { useParams } from "next/navigation";
-import { users } from "@/data/users";
 import { Chat } from "@/components/Chat";
+import { users } from "@/data/users";
 import { useSession } from "next-auth/react";
+import { useParams } from "next/navigation";
 
 export default function ChatPage() {
   const { userId } = useParams();

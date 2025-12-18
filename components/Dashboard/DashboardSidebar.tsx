@@ -6,32 +6,23 @@ import {
   DASHBOARD_GROUP_URL,
   DASHBOARD_URL,
 } from "@/constants";
+import { users } from "@/data/users";
 import { FileIcon, FolderIcon, UserIcon } from "@/icons";
 import { LinkButton } from "@/primitives/Button";
 import { Group, User } from "@/types";
 import { normalizeTrailingSlash } from "@/utils";
 import styles from "./DashboardSidebar.module.css";
-import { users } from "@/data/users";
-import { groups } from "@/data/groups";
 
 interface Props extends ComponentProps<"div"> {
   groups: Group[];
   currentUser: User;
 }
 
-interface SidebarLinkProps extends Omit<
-  ComponentProps<typeof LinkButton>,
-  "href"
-> {
+interface SidebarLinkProps extends Omit<ComponentProps<typeof LinkButton>, "href"> {
   href: string;
 }
 
-function SidebarLink({
-  href,
-  children,
-  className,
-  ...props
-}: SidebarLinkProps) {
+function SidebarLink({ href, children, className, ...props }: SidebarLinkProps) {
   const pathname = usePathname();
   const isActive = useMemo(
     () => normalizeTrailingSlash(pathname) === normalizeTrailingSlash(href),
@@ -51,7 +42,12 @@ function SidebarLink({
   );
 }
 
-export function DashboardSidebar({ className, groups, currentUser, ...props }: Props) {
+export function DashboardSidebar({
+  className,
+  groups,
+  currentUser,
+  ...props
+}: Props) {
   const otherUsers = useMemo(() => {
     const currentUserGroupIds = new Set(currentUser.groupIds);
     return users.filter(
@@ -106,7 +102,7 @@ export function DashboardSidebar({ className, groups, currentUser, ...props }: P
                     icon={<UserIcon />}
                   >
                     {user.name}
-                  </SidebarLink>
+                  </SAidebarLink>
                 </li>
               );
             })}

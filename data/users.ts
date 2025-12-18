@@ -12,7 +12,7 @@ export const users: Omit<User, "color">[] = [
   {
     id: "satvik.singh@sparrow.com",
     name: "Satvik Singh",
-    avatar: "https://raw.githubusercontent.com/appointeasedev-oss/sparrow-partners/refs/heads/final/pic.jpg",
+    avatar: "https://olcojkaokbyrbqjueboo.supabase.co/storage/v1/object/public/fvd/pic.jpg",
     groupIds: ["Mail", "Shubham", "Blanxiro", "Khushank"],
     password: "Satvik#Testplay#2025",
   },

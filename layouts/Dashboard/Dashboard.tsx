@@ -3,16 +3,18 @@
 import clsx from "clsx";
 import { ComponentProps, useCallback, useState } from "react";
 import { DashboardHeader, DashboardSidebar } from "@/components/Dashboard";
-import { Group } from "@/types";
+import { Group, User } from "@/types";
 import styles from "./Dashboard.module.css";
 
 interface Props extends ComponentProps<"div"> {
   groups: Group[];
+  currentUser: User;
 }
 
 export function DashboardLayout({
   children,
   groups,
+  currentUser,
   className,
   ...props
 }: Props) {
@@ -28,7 +30,7 @@ export function DashboardLayout({
         <DashboardHeader isOpen={isMenuOpen} onMenuClick={handleMenuClick} />
       </header>
       <aside className={styles.aside} data-open={isMenuOpen || undefined}>
-        <DashboardSidebar groups={groups} />
+        <DashboardSidebar groups={groups} currentUser={currentUser} />
       </aside>
       <main className={styles.main}>{children}</main>
     </div>

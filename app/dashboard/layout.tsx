@@ -8,11 +8,16 @@ export default async function Dashboard({ children }: { children: ReactNode }) {
   const session = await auth();
 
   // If not logged in, go to marketing page
-  if (!session) {
+  if (!session?.user?.info) {
     redirect("/");
   }
 
-  const groups = await getGroups(session?.user.info.groupIds ?? []);
+  const { info: currentUser } = session.user;
+  const groups = await getGroups(currentUser.groupIds ?? []);
 
-  return <DashboardLayout groups={groups}>{children}</DashboardLayout>;
+  return (
+    <DashboardLayout groups={groups} currentUser={currentUser}>
+      {children}
+    </DashboardLayout>
+  );
 }

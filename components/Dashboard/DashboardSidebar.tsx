@@ -6,14 +6,17 @@ import {
   DASHBOARD_GROUP_URL,
   DASHBOARD_URL,
 } from "@/constants";
-import { FileIcon, FolderIcon } from "@/icons";
+import { FileIcon, FolderIcon, UserIcon } from "@/icons";
 import { LinkButton } from "@/primitives/Button";
-import { Group } from "@/types";
+import { Group, User } from "@/types";
 import { normalizeTrailingSlash } from "@/utils";
 import styles from "./DashboardSidebar.module.css";
+import { users } from "@/data/users";
+import { groups } from "@/data/groups";
 
 interface Props extends ComponentProps<"div"> {
   groups: Group[];
+  currentUser: User;
 }
 
 interface SidebarLinkProps extends Omit<
@@ -48,7 +51,16 @@ function SidebarLink({
   );
 }
 
-export function DashboardSidebar({ className, groups, ...props }: Props) {
+export function DashboardSidebar({ className, groups, currentUser, ...props }: Props) {
+  const otherUsers = useMemo(() => {
+    const currentUserGroupIds = new Set(currentUser.groupIds);
+    return users.filter(
+      (user) =>
+        user.id !== currentUser.id &&
+        user.groupIds.some((groupId) => currentUserGroupIds.has(groupId))
+    );
+  }, [currentUser.id, currentUser.groupIds]);
+
   return (
     <div className={clsx(className, styles.sidebar)} {...props}>
       <nav className={styles.navigation}>
@@ -77,6 +89,23 @@ export function DashboardSidebar({ className, groups, ...props }: Props) {
                     icon={<FolderIcon />}
                   >
                     {group.name}
+                  </SidebarLink>
+                </li>
+              );
+            })}
+          </ul>
+        </div>
+        <div className={styles.category}>
+          <span className={styles.categoryTitle}>Direct Messages</span>
+          <ul className={styles.list}>
+            {otherUsers.map((user) => {
+              return (
+                <li key={user.id}>
+                  <SidebarLink
+                    href={`/dashboard/chat/${user.id}`}
+                    icon={<UserIcon />}
+                  >
+                    {user.name}
                   </SidebarLink>
                 </li>
               );

@@ -1,5 +1,7 @@
 import { supabase } from "./supabase";
 
+import { supabase } from "./supabase";
+
 /**
  * Get User
  *
@@ -13,6 +15,9 @@ export async function getUser(userId: string) {
     .select('*')
     .eq('id', userId)
     .single();
+    .select('*')
+    .eq('id', userId)
+    .single();
 
   if (error || !user) {
     console.warn(`
@@ -23,6 +28,11 @@ ERROR: User "${userId}" was not found in database.
 
   // Get user's group IDs
   const { data: userGroups } = await supabase
+    .from('user_groups')
+    .select('group_id')
+    .eq('user_id', userId);
+
+  const groupIds = userGroups?.map(ug => ug.group_id) || [];
     .from('user_groups')
     .select('group_id')
     .eq('user_id', userId);

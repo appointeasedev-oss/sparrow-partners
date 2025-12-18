@@ -1,8 +1,17 @@
 import { supabase } from "./supabase";
 
+import { supabase } from "./supabase";
+
 type Props = {
   groupIds?: string[];
   search?: string;
+};
+
+type GroupWithMembers = {
+  id: string;
+  name: string;
+  created_at: string | null;
+  memberIds: string[];
 };
 
 type GroupWithMembers = {
@@ -27,16 +36,25 @@ export async function getGroups({ groupIds, search }: Props = {}): Promise<
     *,
     user_groups(user_id)
   `);
+> {
+  let query = supabase.from('groups').select(`
+    *,
+    user_groups(user_id)
+  `);
 
   if (groupIds) {
     query = query.in('id', groupIds);
-  }
-
   if (search) {
     const term = search.toLowerCase();
     query = query.or(`name.ilike.%${term}%,id.ilike.%${term}%`);
   }
 
+  const { data: groups, error } = await query;
+
+    const term = search.toLowerCase();
+    query = query.or(`name.ilike.%${term}%,id.ilike.%${term}%`);
+    ...group,
+    memberIds: group.user_groups?.map((ug: any) => ug.user_id) || [],
   const { data: groups, error } = await query;
 
   if (error) {

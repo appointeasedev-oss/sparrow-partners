@@ -52,6 +52,8 @@ function SidebarLink({
 export function DashboardSidebar({ className, groups, ...props }: Props) {
   const [showChat, setShowChat] = useState(false);
   const [selectedChatUser, setSelectedChatUser] = useState<string | null>(null);
+  const [showChat, setShowChat] = useState(false);
+  const [selectedChatUser, setSelectedChatUser] = useState<string | null>(null);
   return (
     <div className={clsx(className, styles.sidebar)} {...props}>
       <nav className={styles.navigation}>
@@ -68,6 +70,14 @@ export function DashboardSidebar({ className, groups, ...props }: Props) {
               </SidebarLink>
             </li>
           </ul>
+        </div>
+        <div className={styles.category}>
+          <button
+            className={clsx(styles.chatToggle, { [styles.chatToggleActive]: showChat })}
+            onClick={() => setShowChat(!showChat)}
+          >
+            <UserIcon /> Chat
+          </button>
         </div>
         <div className={styles.category}>
           <button
@@ -95,6 +105,27 @@ export function DashboardSidebar({ className, groups, ...props }: Props) {
           </ul>
         </div>
       </nav>
+      
+      {showChat && (
+        <div className={styles.chatContainer}>
+          {!selectedChatUser ? (
+            <ChatSidebar
+              selectedUserId={selectedChatUser || undefined}
+              onSelectUser={(userId) => setSelectedChatUser(userId)}
+            />
+          ) : (
+            <div className={styles.chatWindowContainer}>
+              <button
+                className={styles.backButton}
+                onClick={() => setSelectedChatUser(null)}
+              >
+                ← Back
+              </button>
+              <ChatWindow userId={selectedChatUser} />
+            </div>
+          )}
+        </div>
+      )}
       
       {showChat && (
         <div className={styles.chatContainer}>

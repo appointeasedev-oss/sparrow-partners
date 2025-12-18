@@ -36,6 +36,7 @@ export async function getGroups({ groupIds, search }: Props = {}): Promise<
     *,
     user_groups(user_id)
   `);
+}
 > {
   let query = supabase.from('groups').select(`
     *,
@@ -44,6 +45,7 @@ export async function getGroups({ groupIds, search }: Props = {}): Promise<
 
   if (groupIds) {
     query = query.in('id', groupIds);
+  }
   if (search) {
     const term = search.toLowerCase();
     query = query.or(`name.ilike.%${term}%,id.ilike.%${term}%`);

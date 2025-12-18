@@ -6,7 +6,6 @@ import { ComponentProps, useEffect, useState } from "react";
 import { getChatConversations, subscribeToChatMessages } from "@/lib/database/chat";
 import { getUsersInSameGroups } from "@/lib/database/getUsers";
 import { Avatar } from "@/primitives/Avatar";
-import { Button } from "@/primitives/Button";
 import { Spinner } from "@/primitives/Spinner";
 import styles from "./ChatSidebar.module.css";
 

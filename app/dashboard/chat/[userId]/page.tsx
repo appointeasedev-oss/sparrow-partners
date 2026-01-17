@@ -1,9 +1,10 @@
 "use client";
 
-import { useSession } from "next-auth/react";
 import { useParams } from "next/navigation";
+import { useSession } from "next-auth/react";
 import { Chat } from "@/components/Chat";
 import { users } from "@/data/users";
+import { getColor } from "@/data/colors";
 
 export default function ChatPage() {
   const { userId } = useParams();
@@ -12,8 +13,12 @@ export default function ChatPage() {
   const user = users.find((u) => u.id === userId);
 
   if (!user || !currentUser) {
-    return <div>Loading...</div>; // Or a more appropriate loading/error state
+    return <div>Loading...</div>;
   }
 
-  return <Chat user={user} currentUser={currentUser} />;
+  // Add color to user since users data omits it
+  const userWithColor = { ...user, color: getColor(user.id) };
+  const currentUserWithColor = { ...currentUser, color: getColor(currentUser.id) };
+
+  return <Chat user={userWithColor} currentUser={currentUserWithColor} />;
 }

@@ -3,8 +3,8 @@
 import { useParams } from "next/navigation";
 import { useSession } from "next-auth/react";
 import { Chat } from "@/components/Chat";
-import { users } from "@/data/users";
 import { getColor } from "@/data/colors";
+import { users } from "@/data/users";
 
 export default function ChatPage() {
   const { userId } = useParams();
@@ -18,7 +18,10 @@ export default function ChatPage() {
 
   // Add color to user since users data omits it
   const userWithColor = { ...user, color: getColor(user.id) };
-  const currentUserWithColor = { ...currentUser, color: getColor(currentUser.id) };
+  const currentUserWithColor = {
+    ...currentUser,
+    color: getColor(currentUser.id),
+  };
 
   return <Chat user={userWithColor} currentUser={currentUserWithColor} />;
 }

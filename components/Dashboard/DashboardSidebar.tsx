@@ -18,7 +18,11 @@ interface Props extends ComponentProps<"div"> {
   currentUser: User;
 }
 
-interface SidebarLinkProps extends Omit<ComponentProps<typeof LinkButton>, "href"> {
+interface SidebarLinkProps
+  extends Omit<
+    ComponentProps<typeof LinkButton>,
+    "href"
+  > {
   href: string;
 }
 

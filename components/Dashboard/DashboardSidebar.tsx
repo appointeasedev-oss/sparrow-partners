@@ -19,10 +19,7 @@ interface Props extends ComponentProps<"div"> {
 }
 
 interface SidebarLinkProps
-  extends Omit<
-    ComponentProps<typeof LinkButton>,
-    "href"
-  > {
+  extends Omit<ComponentProps<typeof LinkButton>, "href"> {
   href: string;
 }
 
